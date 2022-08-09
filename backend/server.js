@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const playerRouter = require("./routes/player.route");
 dotenv.config();
 
 const app = express();
@@ -16,6 +17,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on("error", () => console.log("database connection failed"));
 db.once("open", () => console.log("database connection successful"));
+
+app.use("/api/players", playerRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../frontend/build")));
